@@ -61,6 +61,7 @@ impl Coder {
     pub fn new() -> Coder {
         Coder { lex: Vec::new() }
     }
+    // finds the closesest TT after the current_line
     pub fn next(&self, _tt: TT, current_line: usize) -> usize {
         for x in current_line..self.lex.len() {
             //println!("{:#?},{}",self.lex[x],x);
@@ -76,7 +77,7 @@ impl Coder {
         panic!("Next not found {:#?},{}", _tt, current_line)
     }
 }
-
+//this is the lexer that makes everything into a long vector of garbage that the parser then makes into a parsed vector the inter can read
 pub fn lext(code: String) -> Coder {
     let code = code;
     let code: Vec<String> = code.chars().map(|x| x.to_string()).collect();

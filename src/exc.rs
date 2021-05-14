@@ -1,11 +1,12 @@
 use crate::parser;
 use crate::parser::{Command, Parse};
 use crate::var::Var;
-
+//what the public sees
 pub fn inter(size: [usize; 2], code: Parse) {
     let mut vars = Var::new();
     inter_back(size, code, &mut vars)
 }
+// the disgusting backend
 pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
     let mut modif = 0;
     //let mut vars = vars;
@@ -31,6 +32,7 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
                 //println!("new var{},{}", a[0], a[1]);
                 vars.new_var_string(&a[0], &a[1]);
             }
+            // executes the if
             Command::If(x1, e, x2) => {
                 let mut skip = true;
                 match e.as_str() {
@@ -61,10 +63,11 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
                     }
                 }
             }
-            Command::Change (a,b) =>{
-                let data = get_data(b,vars);
-                println!("chan {}",data);
-                vars._up_var(a.as_str(),data.as_str())
+            //changes variables
+            Command::Change(a, b) => {
+                let data = get_data(b, vars);
+                println!("chan {}", data);
+                vars._up_var(a.as_str(), data.as_str())
             }
             Command::Misc(parser::Misc::IfStop) => {}
 
@@ -74,7 +77,7 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
         }
     }
 }
-
+// get the data from parser::Var
 fn get_data(v: parser::Var, vars: &mut Var) -> String {
     match v {
         parser::Var::Var(a) => return vars.get_var(a),
