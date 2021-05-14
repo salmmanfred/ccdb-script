@@ -8,13 +8,13 @@ pub fn inter(size: [usize; 2], code: Parse) {
 }
 // the disgusting backend
 pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
-    let mut modif = 0;
+    let mut _modif = 0;
     //let mut vars = vars;
     let size_1 = size[0];
     let size_2 = size[1];
 
     for pos_ in size_1..size_2 {
-        let pos_ = pos_ + modif;
+        let pos_ = pos_ + _modif;
         if pos_ >= size_2 {
             break;
         }
@@ -51,15 +51,26 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
                 }
                 if skip {
                     let cur = code.parsed_data.clone();
-
-                    for x in pos_..size_2 {
-                        match cur[x] {
-                            Command::Misc(parser::Misc::IfStop) => {
-                                modif = x - pos_;
-                                break;
-                            }
-                            _ => {}
+                    let tt = Command::Misc(parser::Misc::IfStop);
+                    let x = cur[pos_..size_2].iter().position(|x| *x == tt);
+                    let mut _pos = 0;
+                    match x {
+                        Some(x) => {
+                            _pos = x + pos_;
+                            //println!("test {}", pos);
                         }
+                        None => {
+                            panic!("cannot find the stop for the if")
+                        }
+                    }
+                    //println!("xxxx{},{},{:#?}", pos, pos_, cur[pos]);
+
+                    match cur[_pos] {
+                        Command::Misc(parser::Misc::IfStop) => {
+                            _modif = _pos - pos_;
+                            break;
+                        }
+                        _ => {}
                     }
                 }
             }

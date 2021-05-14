@@ -63,7 +63,7 @@ impl Coder {
     }
     // finds the closesest TT after the current_line
     pub fn next(&self, _tt: TT, current_line: usize) -> usize {
-        for x in current_line..self.lex.len() {
+        /*for x in current_line..self.lex.len() {
             //println!("{:#?},{}",self.lex[x],x);
 
             if self.lex[x] == _tt {
@@ -73,6 +73,23 @@ impl Coder {
 
                 return x;
             }
+        }*/
+        let mut _retur = 0;
+        let x = self.lex[current_line..self.lex.len()].iter().position(|x| *x == _tt);
+        let mut _pos = 0;
+        match x {
+            Some(x) => {
+                _pos = x + current_line;
+                _retur =  _pos;
+                //println!("test {}", pos);
+            }
+            None => {
+                panic!("cannot find the stop for the if");
+            
+            }
+        }
+        if _retur != 0{
+            return _retur
         }
         panic!("Next not found {:#?},{}", _tt, current_line)
     }

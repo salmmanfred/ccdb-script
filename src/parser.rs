@@ -2,18 +2,18 @@
 use crate::lexer;
 use crate::lexer::TT;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Misc {
     Stop,
     IfStop,
     Unknown,
 }
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Var {
     Sstring(String),
     Var(String),
 }
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Command {
     Prints(Var),
     If(Var, String, Var),
@@ -362,7 +362,7 @@ fn var_par(pos: [usize; 2], code: lexer::Coder) -> Command {
     let args = args.join("");
     let vals = val.join("");
     let val = parse_str_var(vals.clone());
-    println!("{:#?},{}", val, vals);
+    //println!("{:#?},{}", val, vals);
 
     //args.split("");
 
