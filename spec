@@ -1,0 +1,6 @@
+print [(print)"Hello, world"]
+if [(if)"test" == "test"]
+var [(var) example "example text"]
+stop if [(if stop)]
+drop [(drop)example_var]
+edit variable [(edit)example_var "new val"]
