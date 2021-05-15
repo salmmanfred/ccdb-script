@@ -1,8 +1,36 @@
 # CCDB-SCRIPT  
-WIP  
   
-# Syntax  
-```  
+Why ccdb-script?  
+
+## ccdb-script is light  
+  
+as said ccdb-script is made to be light  
+
+## ccdb-script is easy
+  
+ccdb-script is made to be easy to intergrate into any given project  
+  
+## How to intergrate  
+  
+```rust
+// ! note this example uses my other crate openfile 
+use ccdb_script;
+/* The test ccdb-script 
+[(var)test "test"]
+*/
+fn main(){
+    ccdb_script::run(openfile::readFile("test.ccdbs")); // you can also get val from this
+    let parse = ccdb_script::parse(openfile::readFile("test.ccdbs")); // if you split it up this way you only need to parse once and then 
+    // you can still easily run the script whenever you want to 
+    let mut val = ccdb_script::run_parsed(parse);
+    println!("{}",val.get_var("test".to_string()));
+}
+```
+  
+# Syntax
+  
+```txt
+
 [(Command)arguments]
 
 example: 
@@ -20,7 +48,9 @@ example:
 
 [(if stop)]
 
-```  
-# Uses 
-This language is made to be easily integrated in ccdb.  
-This language is still in heavy development and its undecided if it's gonna be directly integrated into ccdb or standalone
+```
+  
+# Uses  
+  
+This language is made to be easily integrated in ccdb  
+and other projects  

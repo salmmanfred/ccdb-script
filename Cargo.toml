@@ -4,7 +4,10 @@ version = "0.1.0"
 authors = ["TheSlam <32799244+salmmanfred@users.noreply.github.com>"]
 edition = "2018"
 license = "MIT"
-
+repository = "https://github.com/salmmanfred/ccdb-script"
+description = "A small language to add in games for easy modding"
+readme = "README.md"
+keywords = ["gamedev", "parser","language","interpreter","embedded"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

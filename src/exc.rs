@@ -2,12 +2,12 @@ use crate::parser;
 use crate::parser::{Command, Parse};
 use crate::var::Var;
 //what the public sees
-pub fn inter(size: [usize; 2], code: Parse) {
+pub fn inter(size: [usize; 2], code: Parse) -> Var {
     let mut vars = Var::new();
     inter_back(size, code, &mut vars)
 }
 // the disgusting backend
-pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
+pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
     let mut _modif = 0;
     //let mut vars = vars;
     let size_1 = size[0];
@@ -30,7 +30,7 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
             },
             Command::Var(a) => {
                 //println!("new var{},{}", a[0], a[1]);
-                vars.new_var_string(&a[0], &a[1]);
+                vars.new_var(&a[0], &a[1]);
             }
             // executes the if
             Command::If(x1, e, x2) => {
@@ -67,8 +67,12 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
 
                     match cur[_pos] {
                         Command::Misc(parser::Misc::IfStop) => {
+                            /*println!("pos= {}",(pos_ - _modif));
+                            println!("xxxx{},{},{:#?}", _pos, pos_, cur[_pos]);*/
+
                             _modif = _pos - pos_;
-                            break;
+
+                            //break;
                         }
                         _ => {}
                     }
@@ -80,6 +84,9 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
                 println!("chan {}", data);
                 vars._up_var(a.as_str(), data.as_str())
             }
+            Command::Delete (a) =>{
+                vars.del_var(a.as_str());
+            }
             Command::Misc(parser::Misc::IfStop) => {}
 
             _ => {
@@ -87,6 +94,7 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) {
             }
         }
     }
+    return vars.clone()
 }
 // get the data from parser::Var
 fn get_data(v: parser::Var, vars: &mut Var) -> String {

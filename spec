@@ -1,6 +1,6 @@
-print [(print)"Hello, world"]
-if [(if)"test" == "test"]
-var [(var) example "example text"]
-stop if [(if stop)]
-drop [(drop)example_var]
-edit variable [(edit)example_var "new val"]
+print [(print)"Hello, world"] DONE
+if [(if)"test" == "test"] DONE 
+var [(var) example "example text"] DONe
+stop if [(if stop)] DONE
+drop [(drop)example_var] DONE
+edit variable [(edit)example_var "new val"] DONE
