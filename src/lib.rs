@@ -3,7 +3,7 @@ mod lexer;
 mod parser;
 mod var;
 //use std::time::Instant;
-pub fn run_parsed(code: parser::Parse) -> var::Var{
+pub fn run_parsed(code: parser::Parse) -> var::Var {
     exc::inter([0, code.parsed_data.len()], code)
 }
 pub fn parse(code: String) -> parser::Parse {
@@ -12,7 +12,7 @@ pub fn parse(code: String) -> parser::Parse {
     parsed_code
 }
 
-pub fn run(code: String) -> var::Var{
+pub fn run(code: String) -> var::Var {
     let lex = lexer::lext(code);
     let parsed_code = parser::parser(lex);
     //drop(lex);

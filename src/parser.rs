@@ -245,16 +245,16 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                         panic!("this should never happen");
                     }
                 },
-                "drop"|"dump" => {
-                    let var = collect_str([code.next(TT::RParen, pos[0]) + 1, pos[1]],code);
-                    match parse_str_var(var.clone()){
-                        Var::Sstring (_) =>{
+                "drop" | "dump" => {
+                    let var = collect_str([code.next(TT::RParen, pos[0]) + 1, pos[1]], code);
+                    match parse_str_var(var.clone()) {
+                        Var::Sstring(_) => {
                             panic!("To dump a variable it needs to be a variable not a string");
-                        }   
-                        _=>{},
+                        }
+                        _ => {}
                     }
                     command_return = Command::Delete(var);
-                },
+                }
                 a => {
                     //println!();
 

@@ -84,7 +84,7 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
                 println!("chan {}", data);
                 vars._up_var(a.as_str(), data.as_str())
             }
-            Command::Delete (a) =>{
+            Command::Delete(a) => {
                 vars.del_var(a.as_str());
             }
             Command::Misc(parser::Misc::IfStop) => {}
@@ -94,7 +94,7 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
             }
         }
     }
-    return vars.clone()
+    return vars.clone();
 }
 // get the data from parser::Var
 fn get_data(v: parser::Var, vars: &mut Var) -> String {

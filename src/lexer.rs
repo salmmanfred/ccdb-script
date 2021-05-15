@@ -75,21 +75,22 @@ impl Coder {
             }
         }*/
         let mut _retur = 0;
-        let x = self.lex[current_line..self.lex.len()].iter().position(|x| *x == _tt);
+        let x = self.lex[current_line..self.lex.len()]
+            .iter()
+            .position(|x| *x == _tt);
         let mut _pos = 0;
         match x {
             Some(x) => {
                 _pos = x + current_line;
-                _retur =  _pos;
+                _retur = _pos;
                 //println!("test {}", pos);
             }
             None => {
                 panic!("cannot find the stop for the if");
-            
             }
         }
-        if _retur != 0{
-            return _retur
+        if _retur != 0 {
+            return _retur;
         }
         panic!("Next not found {:#?},{}", _tt, current_line)
     }
