@@ -53,9 +53,17 @@ example:
 [(print)"That is true"]
 
 [(print)"dropping test"]
+/ drop a variable by using drop
 [(drop)test]
 
 [(if stop)]
+
+[(var)int "0"]
+[(print)int]
+/ use + / - and * like this before the number to do a math operation
+[(edit)int +100]
+[(print)int]
+
 
 ```
   

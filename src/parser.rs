@@ -13,6 +13,20 @@ pub enum Var {
     Sstring(String),
     Var(String),
 }
+
+#[derive(Clone, Debug, PartialEq)]
+pub enum Math {
+    Eq(i64),
+    Pass,
+    Plus(i64),
+    Minus(i64),
+    Div(i64),
+    Times(i64),
+
+
+}
+
+
 #[derive(Clone, Debug, PartialEq)]
 pub enum Command {
     Prints(Var),
@@ -26,7 +40,7 @@ pub enum Command {
     Get(String),
 
     Var([String; 2]),
-    Change(String, Var),
+    Change(String, Var, Math),
     Delete(String),
 }
 #[derive(Clone)]
@@ -62,12 +76,26 @@ pub fn parser(code: lexer::Coder) -> Parse {
     #[allow(unused_variables)]
     let curlin = 0;
     let mut modif = 0;
+    // unified panic in the main parser
+    fn unif_pan(a: TT){
+        panic!(format!("MP command not found {:#?}", a))
+    }
+
     for line in 0..code.lex.clone().len() {
         let line = line + modif;
         if line >= code.lex.clone().len() {
             break;
         }
         match code.lex[line].clone() {
+            TT::Char(a) =>{
+                // skip line if the first char is /
+                if a.as_str() == "/"{
+                    let next_rb = code.next(TT::LBracket, line);
+                    modif += next_rb -1  - line;
+                }else{
+                    unif_pan(TT::Char(a));
+                }
+            }
             TT::LBracket => {
                 //let codes = code.lex.clone();
                 let code = code.clone();
@@ -80,7 +108,10 @@ pub fn parser(code: lexer::Coder) -> Parse {
                 // find the next line
                 modif += next_rb - line;
             }
-            a => panic!(format!("MP command not found {:#?}", a)),
+            TT::WhiteSpace=>{
+
+            }
+            a => unif_pan(a),
         }
         //curlin += 1;
     }
@@ -101,12 +132,14 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
             let mut com: Vec<String> = Vec::new();
             let mut args: Vec<String> = Vec::new();
             //assembles together the com it only accepts letters and spaces
+            let mut comm = false;
             for codes in curlin + 1..code.next(TT::RParen, pos[0]) {
                 //
                 match code.lex[codes].clone() {
                     TT::Letter(a) => {
                         com.push(a);
                     }
+                   
                     TT::WhiteSpace => {
                         com.push(" ".to_string());
                     }
@@ -114,7 +147,8 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                 }
             }
 
-            let com = com.join("");
+            let mut com = com.join("");
+           
             // then finds the right fit from com. kinda like thoes shitty find love programs
             match com.as_str() {
                 "print" => {
@@ -235,11 +269,11 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                     // just the stop
                     command_return = Command::Misc(Misc::IfStop);
                 }
-                "edit" => match var_par([pos[0], pos[1]], code) {
+                "edit" | "cha" => match var_par([pos[0], pos[1]], code) {
                     // finds the edit and if its a variable that wants to be the new value
                     // or just text
-                    Command::Change(a, b) => {
-                        command_return = Command::Change(a, b);
+                    Command::Change(a, b, c) => {
+                        command_return = Command::Change(a, b, c);
                     }
                     _ => {
                         panic!("this should never happen");
@@ -254,6 +288,9 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                         _ => {}
                     }
                     command_return = Command::Delete(var);
+                }
+                "com" =>{
+
                 }
                 a => {
                     //println!();
@@ -328,6 +365,8 @@ fn var_par(pos: [usize; 2], code: lexer::Coder) -> Command {
     let mut args: Vec<String> = Vec::new();
 
     let mut push_to_val: bool = false;
+    let mut math: bool = true;
+    let mut math_tp:&str = "_";
 
     for codes in ne_q..ne_q2 {
         //
@@ -357,10 +396,33 @@ fn var_par(pos: [usize; 2], code: lexer::Coder) -> Command {
                 //args.push(" ".to_string());
             }
             TT::Char(a) => {
-                args.push(a);
+                if push_to_val | math{
+                    match a.as_str() {
+                        "-" =>{
+                            math_tp = "-";
+                            math = false;
+                        }
+                        "+" =>{
+                            math_tp = "+";
+                            math = false;
+                        }
+                        "/" =>{
+                            math_tp = "/";
+                            math = false;
+                        }
+                        "*"|";" =>{
+                            math_tp = "*";
+                            math = false;
+                        }
+                        _=> args.push(a)
+                    }
+                }else{
+                    args.push(a);
+                }
             }
             TT::Quotation => {
-                if push_to_val {
+                if push_to_val{
+                    math = false;
                     val.push(r#"""#.to_string());
                 } else {
                 }
@@ -372,9 +434,30 @@ fn var_par(pos: [usize; 2], code: lexer::Coder) -> Command {
     let args = args.join("");
     let vals = val.join("");
     let val = parse_str_var(vals.clone());
+
+    let mut mth = Math::Pass;
+    match math_tp{
+        "-" =>{
+            mth = Math::Minus(vals.parse::<i64>().unwrap())
+        }
+        "/" =>{
+            mth = Math::Div(vals.parse::<i64>().unwrap())
+        }
+        "+" =>{
+
+            mth = Math::Plus(vals.parse::<i64>().unwrap())
+        }
+        "*" =>{
+            mth = Math::Times(vals.parse::<i64>().unwrap())
+        }
+        _=>{
+
+        }
+    }
+
     //println!("{:#?},{}", val, vals);
 
     //args.split("");
 
-    return Command::Change(args, val);
+    return Command::Change(args, val, mth);
 }

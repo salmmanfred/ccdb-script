@@ -44,16 +44,28 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
                         } else {
                         }
                     }
+                    "!=" => {
+                        //println!("{},{},",get_data(x1,vars),get_data(x2,vars));
+
+                        if get_data(x1, vars) != get_data(x2, vars) {
+                            skip = false;
+                        } else {
+                        }
+                    }
 
                     a => {
                         panic!("{} can not be used in a if statement ", a)
                     }
                 }
                 if skip {
+                    // skip until the stop command if the if is wrong 
                     let cur = code.parsed_data.clone();
+                    // get the stop 
                     let tt = Command::Misc(parser::Misc::IfStop);
+                    // find the pos 
                     let x = cur[pos_..size_2].iter().position(|x| *x == tt);
                     let mut _pos = 0;
+                    // now its just to jump
                     match x {
                         Some(x) => {
                             _pos = x + pos_;
@@ -64,7 +76,7 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
                         }
                     }
                     //println!("xxxx{},{},{:#?}", pos, pos_, cur[pos]);
-
+                    // dubble check that its correct
                     match cur[_pos] {
                         Command::Misc(parser::Misc::IfStop) => {
                             /*println!("pos= {}",(pos_ - _modif));
@@ -79,10 +91,46 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
                 }
             }
             //changes variables
-            Command::Change(a, b) => {
-                let data = get_data(b, vars);
-                println!("chan {}", data);
-                vars._up_var(a.as_str(), data.as_str())
+            Command::Change(a, b ,c) => {
+                use parser::Math;
+                if c != Math::Pass{
+                    //println!("{:#?} {:#?}",data,c);
+                    // this is for plus minus and stuff like that
+                    match c{
+                        Math::Minus(ch) =>{
+                            let f = vars.get_var(a.clone()).parse::<i64>().unwrap() - ch;
+                            vars._up_var(a.as_str(), f.to_string().as_str());
+                            
+                        }
+                        Math::Plus(ch) =>{
+
+                            let f = vars.get_var(a.clone()).parse::<i64>().unwrap() + ch;
+                            
+                            vars._up_var(a.as_str(), f.to_string().as_str());
+                            
+                        }
+                        Math::Times(ch) =>{
+                            let f = vars.get_var(a.clone()).parse::<i64>().unwrap() * ch;
+                            vars._up_var(a.as_str(), f.to_string().as_str());
+                            
+                        }
+                        Math::Div(ch) =>{
+                            let f = vars.get_var(a.clone()).parse::<i64>().unwrap() / ch;
+                            vars._up_var(a.as_str(), f.to_string().as_str());
+                            
+                        }
+                        _=>{
+                            panic!("why do i need this? oh right i dont")
+                        }
+                    }
+
+                }else{
+                let data = get_data(b.clone(), vars);
+
+                //println!("chan {}", data);
+                vars._up_var(a.as_str(), data.as_str());
+                }
+                
             }
             Command::Delete(a) => {
                 vars.del_var(a.as_str());
@@ -100,6 +148,12 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
 fn get_data(v: parser::Var, vars: &mut Var) -> String {
     match v {
         parser::Var::Var(a) => return vars.get_var(a),
+        parser::Var::Sstring(a) => return a,
+    }
+}
+fn get_str(v: parser::Var) -> String {
+    match v {
+        parser::Var::Var(a) => return a,
         parser::Var::Sstring(a) => return a,
     }
 }
