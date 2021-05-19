@@ -26,6 +26,11 @@ fn main(){
     // you can still easily run the script whenever you want to 
     let mut val = ccdb_script::run_parsed(parse);
     println!("{}",val.get_var("test".to_string()));
+
+    // if you want custom values when running the script;
+    let mut var = ccdb_script::var::Var::new();
+    var.new_var("name","value");
+    ccdb_script::run_parsed_var(parse, &mut var);
 }
 ```
   
@@ -47,6 +52,8 @@ example:
 [(print)test]
 [(print)"That is true"]
 
+[(print)"dropping test"]
+[(drop)test]
 
 [(if stop)]
 
