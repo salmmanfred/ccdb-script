@@ -14,6 +14,7 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
     let size_2 = size[1];
 
     for pos_ in size_1..size_2 {
+        //print!("pos_{}",pos_);
         let pos_ = pos_ + _modif;
         if pos_ >= size_2 {
             break;
@@ -57,16 +58,41 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
                         panic!("{} can not be used in a if statement ", a)
                     }
                 }
+               // println!("pos{},f {}",pos_,skip);
                 if skip {
                     // skip until the stop command if the if is wrong 
                     let cur = code.parsed_data.clone();
                     // get the stop 
-                    let tt = Command::Misc(parser::Misc::IfStop);
+                    //let tt = Command::Misc(parser::Misc::IfStop);
                     // find the pos 
-                    let x = cur[pos_..size_2].iter().position(|x| *x == tt);
+                    //let x = cur[pos_..size_2].iter().position(|x| *x == tt);
+                    let mut inc = 1; // this must be zero for it to have found the correct stop
+
+                    let mut correct_stop = 0;// the correct if stop
+                    let mut post = pos_; // current position of the pointer
+                    for x in cur[pos_+1..size_2].iter(){//lets now find that stop if 
+                        match x {
+                            Command::If (_,_,_)=>{// adds to the inc if there are more ifs in there
+                                inc += 1;
+                            }
+                            Command::Misc(parser::Misc::IfStop) =>{// if there is a if stop it removes a inc
+                                inc -= 1;
+
+                                if inc <= 0{
+                                    correct_stop = post;
+                                    //println!("{},{}",correct_stop,inc);
+                                    break;
+                                }
+
+                            }
+                            _=>{}
+                        }
+                        post += 1;
+
+                    }
                     let mut _pos = 0;
                     // now its just to jump
-                    match x {
+                    /*match  {
                         Some(x) => {
                             _pos = x + pos_;
                             //println!("test {}", pos);
@@ -74,20 +100,19 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
                         None => {
                             panic!("cannot find the stop for the if")
                         }
-                    }
+                    }*/
+                    _pos = correct_stop ;
+                    _modif = _pos - pos_;
+                   // println!("{},{}",_modif,(_modif + pos_));
+
+                    
                     //println!("xxxx{},{},{:#?}", pos, pos_, cur[pos]);
                     // dubble check that its correct
-                    match cur[_pos] {
-                        Command::Misc(parser::Misc::IfStop) => {
-                            /*println!("pos= {}",(pos_ - _modif));
-                            println!("xxxx{},{},{:#?}", _pos, pos_, cur[_pos]);*/
-
-                            _modif = _pos - pos_;
-
-                            //break;
-                        }
-                        _ => {}
+                    
+                    if _pos >= size_2{
+                        break;
                     }
+                   
                 }
             }
             //changes variables
