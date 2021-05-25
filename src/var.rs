@@ -57,9 +57,9 @@ impl Var {
             
 
             if mem_foot > self.max_mem{
-                println!("You are using to much memory, you are using: {} bytes while you are only allowed to use: {} bytes",mem_foot,self.max_mem);
-                println!("{},{}",self.var.len(),self.var_name.len());
-                println!("{},{}",mem::size_of_val(&self.var),mem::size_of_val(&self.var_name));
+                panic!("You are using to much memory, you are using: {} bytes while you are only allowed to use: {} bytes",mem_foot,self.max_mem);
+                /*println!("{},{}",self.var.len(),self.var_name.len());
+                println!("{},{}",mem::size_of_val(&self.var),mem::size_of_val(&self.var_name));*/
                 
 
             }
