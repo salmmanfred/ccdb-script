@@ -132,7 +132,7 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
             let mut com: Vec<String> = Vec::new();
             let mut args: Vec<String> = Vec::new();
             //assembles together the com it only accepts letters and spaces
-            let mut comm = false;
+         
             for codes in curlin + 1..code.next(TT::RParen, pos[0]) {
                 //
                 match code.lex[codes].clone() {
@@ -147,7 +147,7 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                 }
             }
 
-            let mut com = com.join("");
+            let com = com.join("");
            
             // then finds the right fit from com. kinda like thoes shitty find love programs
             match com.as_str() {

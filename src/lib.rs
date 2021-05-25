@@ -2,6 +2,8 @@ pub mod exc;
 mod lexer;
 mod parser;
 pub mod var;
+pub mod _mem;
+
 //use std::time::Instant;
 pub fn run_parsed(code: parser::Parse) -> var::Var {
     exc::inter([0, code.parsed_data.len()], code)

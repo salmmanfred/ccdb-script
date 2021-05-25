@@ -176,7 +176,7 @@ fn get_data(v: parser::Var, vars: &mut Var) -> String {
         parser::Var::Sstring(a) => return a,
     }
 }
-fn get_str(v: parser::Var) -> String {
+fn _get_str(v: parser::Var) -> String {
     match v {
         parser::Var::Var(a) => return a,
         parser::Var::Sstring(a) => return a,
