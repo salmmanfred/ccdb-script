@@ -1,6 +1,6 @@
 pub mod exc;
-mod lexer;
-mod parser;
+pub mod lexer;
+pub mod parser;
 pub mod var;
 pub mod _mem;
 
@@ -18,7 +18,7 @@ pub fn run(code: String) -> var::Var {
     let lex = lexer::lext(code);
     let parsed_code = parser::parser(lex);
     //drop(lex);
-    //let now = Instant::now();
+   // let now = Instant::now();
     let x = exc::inter([0, parsed_code.parsed_data.len()], parsed_code);
     //println!("Extime: {}", now.elapsed().as_millis());
     x

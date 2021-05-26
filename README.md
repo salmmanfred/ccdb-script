@@ -30,6 +30,7 @@ fn main(){
     // if you want custom values when running the script;
     let mut var = ccdb_script::var::Var::new();
     var.new_var("name","value");
+    var.set_max_mem(100); // set the max number of bytes the script is allowed to use if you set it to 0 it will be infinite(default)
     ccdb_script::run_parsed_var(parse, &mut var);
 }
 ```

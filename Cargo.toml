@@ -1,6 +1,6 @@
 [package]
 name = "ccdb_script"
-version = "1.1.0"
+version = "1.2.0"
 authors = ["TheSlam <32799244+salmmanfred@users.noreply.github.com>"]
 edition = "2018"
 license = "MIT"

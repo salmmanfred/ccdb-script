@@ -1,5 +1,5 @@
 
-use std::mem;
+//use std::mem;
 use crate::_mem;
 
 #[derive(Clone)]
@@ -13,7 +13,7 @@ impl Var {
         Var {
             var: Vec::new(),
             var_name: Vec::new(),
-            max_mem:1,
+            max_mem:0,
         }
     }
     //make a new Var thats a string the only 2 variables in this language
@@ -57,7 +57,7 @@ impl Var {
             
 
             if mem_foot > self.max_mem{
-                panic!("You are using to much memory, you are using: {} bytes while you are only allowed to use: {} bytes",mem_foot,self.max_mem);
+                panic!("You are using too much memory, you are using: {} bytes while you are only allowed to use: {} bytes",mem_foot,self.max_mem);
                 /*println!("{},{}",self.var.len(),self.var_name.len());
                 println!("{},{}",mem::size_of_val(&self.var),mem::size_of_val(&self.var_name));*/
                 
