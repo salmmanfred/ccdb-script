@@ -80,8 +80,8 @@ example:
 / use + / - and * like this before the number to do a math operation
 [(edit)int +100]
 [(print)int]
-[(custom) arg1 arg2 arg3 ...]
-
+[(custom) arg1 ,< arg2 arg3 ...]
+/ split the line using ,<
 
 ```
   
