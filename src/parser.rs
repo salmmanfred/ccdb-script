@@ -307,7 +307,7 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                     for x in cus{
                         custom_arg.push(parse_str_var(x));
                     }
-                    println!("{:#?}",custom_arg);
+                    //println!("{:#?}",custom_arg);
 
                     command_return = Command::Cus(a.to_string(),custom_arg)
 
