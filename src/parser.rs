@@ -302,7 +302,7 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
 
                     //panic!(format!("command not found {}", a))
                     let cus = collect_str([code.next(TT::RParen, pos[0]) + 1, pos[1]], code);
-                    let cus: Vec<String> = cus.split(" ").collect::<Vec<&str>>().into_iter().map(|x|x.to_string()).collect();
+                    let cus: Vec<String> = cus.split(",").collect::<Vec<&str>>().into_iter().map(|x|x.to_string()).collect();
                     let mut custom_arg:  Vec<Var> = Vec::new();
                     for x in cus{
                         custom_arg.push(parse_str_var(x));
