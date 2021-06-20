@@ -168,7 +168,15 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var,custom:Custom ) 
                 for x in b{
                     args.push(get_data(x,vars));
                 }
-                vars.new_var( format!("R{}",a).as_str(),custom.run_fn(a, args).as_str());
+                match custom.run_fn(a, args){
+                    Some (a) =>{
+                        vars.new_var( format!("R{}",a).as_str(),a.as_str());
+
+                    }
+                    None =>{
+
+                    }
+                }
             }
             _ => {
                 panic!("function not found");

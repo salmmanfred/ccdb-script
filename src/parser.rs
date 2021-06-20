@@ -79,7 +79,7 @@ pub fn parser(code: lexer::Coder) -> Parse {
     let mut modif = 0;
     // unified panic in the main parser
     fn unif_pan(a: TT){
-        panic!(format!("MP command not found {:#?}", a))
+        panic!("MP command not found {:#?}", a)
     }
 
     for line in 0..code.lex.clone().len() {
@@ -144,6 +144,10 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                     TT::WhiteSpace => {
                         com.push(" ".to_string());
                     }
+                    TT::Num (a) =>{
+                        com.push(a);
+
+                    }
                     _ => panic!("sub parsing error "),
                 }
             }
@@ -185,7 +189,7 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                             TT::Char(a) => {
                                 args.push(a);
                             }
-                            a => panic!(format!("sub parsing error 2: {:#?}", a)),
+                            a => panic!("sub parsing error 2: {:#?}", a),
                         }
                     }
                     let args = args.join("");
@@ -235,7 +239,7 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                             TT::Quotation => {
                                 push_to_val = true;
                             }
-                            a => panic!(format!("sub parsing error 2: {:#?}", a)),
+                            a => panic!("sub parsing error 2: {:#?}", a),
                         }
                     }
 
@@ -308,7 +312,7 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                 }
             }
         }
-        a => panic!(format!("SP command not found {:#?} line {}", a, curlin)),
+        a => panic!("SP command not found {:#?} line {}", a, curlin),
     }
     //curlin += 1;
 
@@ -360,7 +364,7 @@ fn collect_str(pos: [usize; 2], code: lexer::Coder) -> String {
             TT::Quotation => {
                 args.push(r#"""#.to_string());
             }
-            a => panic!(format!("sub_ parsing error 1: {:#?}", a)),
+            a => panic!("sub_ parsing error 1: {:#?}", a),
         }
     }
     args.join("")
@@ -436,7 +440,7 @@ fn var_par(pos: [usize; 2], code: lexer::Coder) -> Command {
                 } else {
                 }
             }
-            a => panic!(format!("sub parsing error 2: {:#?}", a)),
+            a => panic!("sub parsing error 2: {:#?}", a),
         }
     }
     // it just returns Command::Change instead

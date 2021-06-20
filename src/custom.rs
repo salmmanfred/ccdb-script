@@ -1,6 +1,11 @@
+pub enum FnType{
+    Output(fn(Vec<String>) -> String),
+    Nout(fn(Vec<String>)),
+}
+
 pub struct Custom{
     pub name: Vec<String>,
-    pub function: Vec<fn(Vec<String>) -> String>,
+    pub function: Vec<FnType>,
 }
 impl Custom{
     pub fn new() -> Custom{
@@ -9,17 +14,26 @@ impl Custom{
             function: Vec::new(),
         }
     }
-    pub fn new_fn(&mut self, custom: fn(Vec<String>) -> String, name: &str){
+    pub fn new_fn(&mut self, custom: FnType, name: &str){
         self.name.push(name.to_string());
         self.function.push(custom);
     }
-    pub fn run_fn(&self, name: String, args: Vec<String>) -> String{
+    pub fn run_fn(&self, name: String, args: Vec<String>) -> Option<String>{
         let name = name.to_string();
         for x in 0..self.name.len(){
             if self.name[x] == name{
-                let fsn = self.function[x];
+               
+                match self.function[x]{
+                    FnType::Output (a) =>{
+                        return Some(a(args))
+                    }
+                    FnType::Nout (a) =>{
+                        a(args);
+                        return None
+                    }
+                }
 
-                return fsn(args)
+          
             }
         }
         panic!("no custom function")

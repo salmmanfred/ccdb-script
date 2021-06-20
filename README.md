@@ -30,11 +30,18 @@ fn main(){
     // create a custom struct. This is used for custom functions in the script that are linked to rust
     let mut custom = ccdb_script::custom::Custom::new();
     //sample function ALL custom functions need Vec<String> and -> String as their only in and outputs
-    fn test(x: Vec<String>) -> String{ 
+  
+    fn test(x: Vec<String>) -> String{
         println!("{:#?}",x);
         "test".to_string()
     }
-    custom.new_fn(test,"test");// add it to the script
+    fn test2(x: Vec<String>){
+        println!("no output{:#?}",x);
+       
+    }
+    custom.new_fn(ccdb_script::custom::FnType::Output(test),"test");//with output 
+    custom.new_fn(ccdb_script::custom::FnType::Nout(test2),"test2");//without output
+// add it to the script
     // the output will be R(function name) with no ()
     // if you want custom values when running the script;
     let mut var = ccdb_script::var::Var::new();
