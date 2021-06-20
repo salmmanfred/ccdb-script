@@ -42,6 +42,7 @@ pub enum Command {
     Var([String; 2]),
     Change(String, Var, Math),
     Delete(String),
+    Cus(String,Vec<Var>),
 }
 #[derive(Clone)]
 pub struct Parse {
@@ -295,7 +296,15 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                 a => {
                     //println!();
 
-                    panic!(format!("command not found {}", a))
+                    //panic!(format!("command not found {}", a))
+                    let cus = collect_str([code.next(TT::RParen, pos[0]) + 1, pos[1]], code);
+                    let cus: Vec<String> = cus.split(" ").collect::<Vec<&str>>().into_iter().map(|x|x.to_string()).collect();
+                    let mut custom_arg:  Vec<Var> = Vec::new();
+                    for x in cus{
+                        custom_arg.push(parse_str_var(x));
+                    }
+                    command_return = Command::Cus(a.to_string(),custom_arg)
+
                 }
             }
         }

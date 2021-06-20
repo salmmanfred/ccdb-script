@@ -1,13 +1,15 @@
 use crate::parser;
 use crate::parser::{Command, Parse};
 use crate::var::Var;
+use crate::custom::Custom;
 //what the public sees
 pub fn inter(size: [usize; 2], code: Parse) -> Var {
     let mut vars = Var::new();
-    inter_back(size, code, &mut vars)
+    let cus = Custom::new();
+    inter_back(size, code, &mut vars, cus)
 }
 // the disgusting backend
-pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
+pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var,custom:Custom ) -> Var {
     let mut _modif = 0;
     //let mut vars = vars;
     let size_1 = size[0];
@@ -161,7 +163,13 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var) -> Var {
                 vars.del_var(a.as_str());
             }
             Command::Misc(parser::Misc::IfStop) => {}
-
+            Command::Cus(a,b) => {
+                let mut args: Vec<String> = Vec::new();
+                for x in b{
+                    args.push(get_data(x,vars));
+                }
+                vars.new_var( format!("R{}",a).as_str(),custom.run_fn(a, args).as_str());
+            }
             _ => {
                 panic!("function not found");
             }

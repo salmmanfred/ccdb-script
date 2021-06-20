@@ -3,6 +3,7 @@ pub mod lexer;
 pub mod parser;
 pub mod var;
 pub mod _mem;
+pub mod custom;
 
 //use std::time::Instant;
 pub fn run_parsed(code: parser::Parse) -> var::Var {
@@ -24,6 +25,6 @@ pub fn run(code: String) -> var::Var {
     x
 }
 
-pub fn run_parsed_var(code: parser::Parse, vars: &mut var::Var) -> var::Var{
-    exc::inter_back([0, code.parsed_data.len()], code, vars)
+pub fn run_parsed_var(code: parser::Parse, vars: &mut var::Var,custom: custom::Custom) -> var::Var{
+    exc::inter_back([0, code.parsed_data.len()], code, vars,custom)
 }

@@ -27,6 +27,15 @@ fn main(){
     let mut val = ccdb_script::run_parsed(parse);
     println!("{}",val.get_var("test".to_string()));
 
+    // create a custom struct. This is used for custom functions in the script that are linked to rust
+    let mut custom = ccdb_script::custom::Custom::new();
+    //sample function ALL custom functions need Vec<String> and -> String as their only in and outputs
+    fn test(x: Vec<String>) -> String{ 
+        println!("{:#?}",x);
+        "test".to_string()
+    }
+    custom.new_fn(test,"test");// add it to the script
+    // the output will be R(function name) with no ()
     // if you want custom values when running the script;
     let mut var = ccdb_script::var::Var::new();
     var.new_var("name","value");
@@ -64,6 +73,7 @@ example:
 / use + / - and * like this before the number to do a math operation
 [(edit)int +100]
 [(print)int]
+[(custom) arg1 arg2 arg3 ...]
 
 
 ```
