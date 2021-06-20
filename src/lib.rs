@@ -5,7 +5,7 @@ pub mod var;
 pub mod _mem;
 pub mod custom;
 
-use std::time::Instant;
+//use std::time::Instant;
 pub fn run_parsed(code: parser::Parse) -> var::Var {
     exc::inter([0, code.parsed_data.len()], code)
 }
