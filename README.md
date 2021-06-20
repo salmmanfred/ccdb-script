@@ -1,16 +1,16 @@
-# CCDB-SCRIPT  
+# CCDB_SCRIPT  
   
 Why ccdb-script?  
   
 A light language for rust when you want your game or project to easily be moddable.
   
-## ccdb-script is light  
+## ccdb_script is light  
   
-as said ccdb-script is made to be light  
+as said ccdb_script is made to be light  
 
-## ccdb-script is easy
+## ccdb_script is easy  
   
-ccdb-script is made to be easy to integrate into any given project  
+ccdb_script is made to be easy to integrate into any given project  
   
 ## How to integrate  
   
