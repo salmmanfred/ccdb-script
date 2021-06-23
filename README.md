@@ -39,8 +39,16 @@ fn main(){
         println!("no output{:#?}",x);
        
     }
+     fn test3(x: &mut ccdb_script::var::Var){
+       
+        print!("vv{:#?}",x.var);
+        x.new_var("lol","yes");
+       
+    }
     custom.new_fn(ccdb_script::custom::FnType::Output(test),"test");//with output 
     custom.new_fn(ccdb_script::custom::FnType::Nout(test2),"test2");//without output
+    custom.new_fn(ccdb_script::custom::FnType::Var(test3),"test3");//to get access to var values
+
 // add it to the script
     // the output will be R(function name) with no ()
     // if you want custom values when running the script;
