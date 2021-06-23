@@ -1,6 +1,8 @@
+use crate::var::Var;
 pub enum FnType{
     Output(fn(Vec<String>) -> String),
     Nout(fn(Vec<String>)),
+    Var(fn(&mut Var)),
 }
 
 pub struct Custom{
@@ -18,7 +20,7 @@ impl Custom{
         self.name.push(name.to_string());
         self.function.push(custom);
     }
-    pub fn run_fn(&self, name: String, args: Vec<String>) -> Option<String>{
+    pub fn run_fn(&self, name: String, args: Vec<String>, v: &mut Var) -> Option<String>{
         let name = name.to_string();
         for x in 0..self.name.len(){
             if self.name[x] == name{
@@ -31,6 +33,10 @@ impl Custom{
                         a(args);
                         return None
                     }
+                    FnType::Var (a) =>{
+                        a(v);
+                        return None
+                    }
                 }
 
           
@@ -38,4 +44,23 @@ impl Custom{
         }
         panic!("no custom function")
     } 
+    pub fn is_no_in(&self, name: String) -> bool{
+
+        for x in 0..self.name.len(){
+            if self.name[x] == name{
+                match self.function[x]{
+                   
+                    FnType::Var (_) =>{
+                      
+                        return true
+                    }
+                    _=>{
+                        return false
+                    }
+                }
+            }
+        }
+        return false
+
+    }
 }

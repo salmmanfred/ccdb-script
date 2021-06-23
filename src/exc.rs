@@ -165,16 +165,21 @@ pub fn inter_back(size: [usize; 2], code: Parse, vars: &mut Var,custom:Custom ) 
             Command::Misc(parser::Misc::IfStop) => {}
             Command::Cus(a,b) => {
                 let mut args: Vec<String> = Vec::new();
-                for x in b{
-                    args.push(get_data(x,vars));
+                
+                if custom.is_no_in(a.clone()){
+                    
+                }else{
+                    for x in b{
+                        args.push(get_data(x,vars));
+                    }
                 }
-                match custom.run_fn(a, args){
+                match custom.run_fn(a, args,vars){
                     Some (a) =>{
                         vars.new_var( format!("R{}",a).as_str(),a.as_str());
 
                     }
                     None =>{
-
+                    
                     }
                 }
             }

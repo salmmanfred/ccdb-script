@@ -303,12 +303,28 @@ pub fn sub_parser(pos: [usize; 2], code: lexer::Coder) -> Command {
                     //panic!(format!("command not found {}", a))
                     let cus = collect_str([code.next(TT::RParen, pos[0]) + 1, pos[1]], code);
                     let cus: Vec<String> = cus.split(",<").collect::<Vec<&str>>().into_iter().map(|x|x.to_string()).collect();
+                    
+
+                    //println!("{:#?}",custom_arg);
+                    /*let mut run = true;
+                    let mut di = 1;
+                    let code = code.clone();
+
+                    while run{
+                        let mut code  = &code.clone().to_owned();
+                        let x = code.next(TT::Quotation, pos[0]);
+                        cus.push(collect_str([x + di, code.next(TT::Quotation, x+di)], code.clone()));
+                        di += 1;
+                        if x >= pos[1]{
+                            run = false;
+                        }
+                    }*/
+
                     let mut custom_arg:  Vec<Var> = Vec::new();
                     for x in cus{
                         custom_arg.push(parse_str_var(x));
                     }
-                    //println!("{:#?}",custom_arg);
-
+                    
                     command_return = Command::Cus(a.to_string(),custom_arg)
 
                 }
